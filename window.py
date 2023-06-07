@@ -24,6 +24,7 @@ class MainWindow(QMainWindow):
             f'Available card information: {SETTING["begin_digits"]}******{SETTING["last_digits"]}')
         layout = QVBoxLayout()
         self.pbar = QProgressBar(self)
+        self.pbar.setGeometry(30, 40, 200, 25)
         self.pbar.setValue(0)
         self.pbar.hide()
         self.timer = QBasicTimer()
