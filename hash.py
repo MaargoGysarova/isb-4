@@ -11,7 +11,7 @@ def check_hash(number: int) -> int:
         int: номер карты
     """
     return number \
-        if hashlib.sha256(f'{SETTING["begin_digits"]}{number}{SETTING["last_digits"]}'.encode()).hexdigest() == f'{SETTING["hash"]}' \
+        if hashlib.sha1(f'{SETTING["begin_digits"]}{number}{SETTING["last_digits"]}'.encode()).hexdigest() == f'{SETTING["hash"]}' \
         else False
 
 ## функция, которая проверяет номер карты используя алгоритм Луна
