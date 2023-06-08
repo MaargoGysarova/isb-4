@@ -68,3 +68,29 @@ class MainWindow(QMainWindow):
                 else:
                     self.result_label.setText('Solution not found')
                     self.pbar.setValue(100)
+
+        ## функция подгатавливает прогресс бар, задает время начала и вызывает функцию поиска номера карты
+        def pb_and_time(self):
+            self.result_label.setText('Search in process...')
+            self.pbar.show()
+            self.pbar.setValue(0)
+            self.timer.start(100, self)
+            start_time = time.time()
+            self.search_card_number(start_time)
+
+        ##функция обновляет прогресс бар и выводит информацию о карте и времени поиска
+        def update_pb_on_progress(self, i: int,start_time: float, result: float):
+            self.pbar.setValue(100)
+            end = time.time() - start_time
+            result_text = f'Found: {result}\n'
+            result_text += f'Checking the Luhn Algorithm: {algorithm_luna(result)}\n'
+            result_text += f'Lead time: {end:.2f} seconds'
+            self.info_card.setText(
+                f'Available card information: {SETTING["initial_digits"]}{result}{SETTING["last_digits"]}')
+            self.result_label.setText(result_text)
+
+
+
+
+
+
