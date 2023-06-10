@@ -19,7 +19,6 @@ class MainWindow(QMainWindow):
         self.background = QLabel(self)
         self.background.setGeometry(0, 0, 600, 400)
         self.background.setPixmap(QPixmap("wallpaper_isb-4.png").scaled(600, 400))
-        btn_font_main = QFont('Impact', 25)
         btn_StyleSheet_main = 'background-color: #ffffff; color: #4682B4; border :1px solid;'
 
         self.info_card = QLabel(
