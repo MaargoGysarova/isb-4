@@ -5,7 +5,7 @@ from settings import SETTING
 def check_hash(number: int) -> int:
     """Функция, которая проверяет совпадение хэша
     Args:
-        x (int): номер карты
+        number (int): номер карты
     Returns:
         int: номер карты
     """
