@@ -1,4 +1,4 @@
-import hashlib
+from hashlib import sha1
 from settings import SETTING
 
 
@@ -10,7 +10,7 @@ def check_hash(number: int) -> int:
         int: номер карты
     """
     return number \
-        if hashlib.sha1(
+        if sha1(
         f'{SETTING["begin_digits"]}{number}{SETTING["last_digits"]}'.encode()).hexdigest() == f'{SETTING["hash"]}' \
         else False
 
