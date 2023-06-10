@@ -1,7 +1,6 @@
-## подобраnm оставшиеся цифры номера карты по ее хешу, с использованием библиотеки multiprocessing
-
 import hashlib
 from settings import SETTING
+
 
 def check_hash(number: int) -> int:
     """Функция, которая проверяет совпадение хэша
@@ -11,10 +10,11 @@ def check_hash(number: int) -> int:
         int: номер карты
     """
     return number \
-        if hashlib.sha1(f'{SETTING["begin_digits"]}{number}{SETTING["last_digits"]}'.encode()).hexdigest() == f'{SETTING["hash"]}' \
+        if hashlib.sha1(
+        f'{SETTING["begin_digits"]}{number}{SETTING["last_digits"]}'.encode()).hexdigest() == f'{SETTING["hash"]}' \
         else False
 
-## функция, которая проверяет номер карты используя алгоритм Луна
+
 def algorithm_luna(number: int):
     """Функция, которая проверяет номер карты используя алгоритм Луна
     Args:
