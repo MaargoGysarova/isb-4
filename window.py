@@ -1,35 +1,40 @@
-import hashlib
 import multiprocessing as mp
-import sys
-import time
-
+import sys, time
+import numpy as np
 from PyQt6.QtCore import QBasicTimer, Qt
-from PyQt6.QtGui import QPixmap
+from PyQt6.QtGui import QPixmap, QFont
 from PyQt6.QtWidgets import (QApplication, QFormLayout, QLabel, QMainWindow,
                              QProgressBar, QPushButton, QSlider, QVBoxLayout,
-                             QWidget)
-
+                             QWidget, QComboBox)
 from hash import algorithm_luna, check_hash
 from settings import SETTING
 
 
 class MainWindow(QMainWindow):
     def __init__(self):
-        super().__init__()
-        self.setWindowTitle('Hash function collision search')
-        self.resize(600, 600)
-        self.setStyleSheet('background-color: #dbdcff;')
+        super(MainWindow, self).__init__()
+        self.result_curd = None
+        self.setWindowTitle('SEARCH OF BANK CARD')
+        self.setFixedSize(600, 400)
+        self.background = QLabel(self)
+        self.background.setGeometry(0, 0, 600, 400)
+        self.background.setPixmap(QPixmap("wallpaper_isb-4.png").scaled(600, 400))
+        btn_font_main = QFont('Impact', 25)
+        btn_StyleSheet_main = 'background-color: #ffffff; color: #4682B4; border :1px solid;'
+
         self.info_card = QLabel(
             f'Available card information: {SETTING["begin_digits"]}******{SETTING["last_digits"]}')
         layout = QVBoxLayout()
+        self.info_card.setStyleSheet(btn_StyleSheet_main)
         self.pbar = QProgressBar(self)
-        self.pbar.setGeometry(30, 40, 200, 25)
         self.pbar.setValue(0)
         self.pbar.hide()
         self.timer = QBasicTimer()
         self.timer.stop()
         title_slider = QLabel('Select number of pools:', self)
+        title_slider.setStyleSheet(btn_StyleSheet_main)
         self.result_label = QLabel('Result:')
+        self.result_label.setStyleSheet(btn_StyleSheet_main)
         layout = QFormLayout()
         self.setLayout(layout)
         slider = QSlider(Qt.Orientation.Horizontal, self)
@@ -46,6 +51,7 @@ class MainWindow(QMainWindow):
         layout.addRow(self.result_label)
         layout.addRow(self.pbar)
         self.start_button = QPushButton('To start searching')
+        title_slider.setStyleSheet(btn_StyleSheet_main)
         self.start_button.clicked.connect(self.pb_and_time)
         layout.addWidget(self.start_button)
         central_widget = QWidget()
@@ -59,6 +65,7 @@ class MainWindow(QMainWindow):
             :param start_time:
             :param self:
         """
+        times = np.empty(shape=0)
         with mp.Pool(self.value) as p:
             for i, result in enumerate(p.map(check_hash, range(99999, 10000000))):
                 if result:
@@ -70,22 +77,30 @@ class MainWindow(QMainWindow):
                 self.result_label.setText('Solution not found')
                 self.pbar.setValue(100)
 
-        ## функция подгатавливает прогресс бар, задает время начала и вызывает функцию поиска номера карты
 
     def pb_and_time(self):
+        """Функция подгатавливает прогресс бар, задает время начала и вызывает функцию поиска номера карты
+        """
         self.prepare_pb()
         start = time.time()
         self.search_card_number(start)
 
     def prepare_pb(self):
+        """Подготавливает прогресс бар и выводит начальную информацию
+        """
         self.result_label.setText('Search in progress...')
         self.pbar.show()
         if not self.timer.isActive():
             self.timer.start(100, self)
         QApplication.processEvents()
 
-    ##функция обновляет прогресс бар и выводит информацию о карте и времени поиска
     def update_pb_on_finish(self, start_time: float, result: float):
+        """Обновляет прогресс бар и выводит информацию о карте и времени поиска
+        Args:
+        start (float): время начала
+        result (float): время окончания поиска
+        """
+        self.result_curd = result
         self.pbar.setValue(100)
         end = time.time() - start_time
         result_text = f'Found number of card: {result}\n'
@@ -95,12 +110,18 @@ class MainWindow(QMainWindow):
             f'Available card information: {SETTING["begin_digits"]}{result}{SETTING["last_digits"]}')
         self.result_label.setText(result_text)
 
-    ## функция обновления ползунка прогресс бара
     def update_pb_on_progress(self, i: int):
+        """Обновляет ползунок pb
+        Args:
+        i (int): значение итерации
+        """
         self.pbar.setValue(int((i + 1) / len(range(99999, 10000000)) * 100))
 
-    ## Функция, которая обновляет значение числа в слайдере
     def updateLabel(self, value: int):
+        """Функция, которая обновляет значение числа в слайдере
+        Args:
+        value (int): число ядер
+        """
         self.value_label.setText(str(value))
 
 
