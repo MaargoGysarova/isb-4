@@ -5,10 +5,10 @@ from settings import read_settings
 
 import numpy as np
 from PyQt6.QtCore import QBasicTimer, Qt
-from PyQt6.QtGui import QPixmap, QFont
+from PyQt6.QtGui import QPixmap
 from PyQt6.QtWidgets import (QApplication, QFormLayout, QLabel, QMainWindow,
                              QProgressBar, QPushButton, QSlider, QVBoxLayout,
-                             QWidget, QComboBox)
+                             QWidget)
 
 
 class MainWindow(QMainWindow):
