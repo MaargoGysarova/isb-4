@@ -1,18 +1,17 @@
 from hashlib import sha1
-from settings import SETTING
+from settings import read_settings
 
+setting = read_settings('settings.json')
 
-def check_hash(number: int) -> int:
+def check_hash(number:int) -> int:
     """Функция, которая проверяет совпадение хэша
     Args:
         number (int): номер карты
     Returns:
-        int: номер карты
+        :param setting: параметры карты
     """
-    return number \
-        if sha1(
-        f'{SETTING["begin_digits"]}{number}{SETTING["last_digits"]}'.encode()).hexdigest() == f'{SETTING["hash"]}' \
-        else False
+    return number if sha1(f'{setting["begin_digits"]}{number}'
+                          f'{setting["last_digits"]}'.encode()).hexdigest() == f'{setting["hash"]}' else False
 
 
 def algorithm_luna(number: int):
@@ -25,16 +24,14 @@ def algorithm_luna(number: int):
     number = str(number)
     if len(number) != 6:
         return False
-    bin = [int(i) for i in SETTING['begin_digits']]
+    bin = [int(i) for i in setting['begin_digits']]
     code = [int(i) for i in number]
-    end = [int(i) for i in SETTING['last_digits']]
+    end = [int(i) for i in setting['last_digits']]
     all_number = bin + code + end
     all_number = all_number[::-1]
     for i in range(0, len(all_number), 2):
         all_number[i] *= 2
         if all_number[i] > 9:
             all_number[i] -= 9
-    if sum(all_number) % 10 == 0:
-        return True
-    else:
-        return False
+
+    return True if sum(all_number) % 10 == 0 else False

@@ -1,17 +1,18 @@
 import multiprocessing as mp
 import sys, time
+from hash import algorithm_luna, check_hash
+from settings import read_settings
+
 import numpy as np
 from PyQt6.QtCore import QBasicTimer, Qt
 from PyQt6.QtGui import QPixmap, QFont
 from PyQt6.QtWidgets import (QApplication, QFormLayout, QLabel, QMainWindow,
                              QProgressBar, QPushButton, QSlider, QVBoxLayout,
                              QWidget, QComboBox)
-from hash import algorithm_luna, check_hash
-from settings import SETTING
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self,setting):
         super(MainWindow, self).__init__()
         self.result_curd = None
         self.setWindowTitle('SEARCH OF BANK CARD')
@@ -22,7 +23,7 @@ class MainWindow(QMainWindow):
         btn_StyleSheet_main = 'background-color: #ffffff; color: #4682B4; border :1px solid;'
 
         self.info_card = QLabel(
-            f'Available card information: {SETTING["begin_digits"]}******{SETTING["last_digits"]}')
+            f'Available card information: {setting["begin_digits"]}******{setting["last_digits"]}')
         layout = QVBoxLayout()
         self.info_card.setStyleSheet(btn_StyleSheet_main)
         self.pbar = QProgressBar(self)
@@ -76,7 +77,6 @@ class MainWindow(QMainWindow):
                 self.result_label.setText('Solution not found')
                 self.pbar.setValue(100)
 
-
     def pb_and_time(self):
         """Функция подгатавливает прогресс бар, задает время начала и вызывает функцию поиска номера карты
         """
@@ -106,7 +106,7 @@ class MainWindow(QMainWindow):
         result_text += f'Checking the Luhn Algorithm: {algorithm_luna(result)}\n'
         result_text += f'Time of process: {end:.2f} seconds'
         self.info_card.setText(
-            f'Available card information: {SETTING["begin_digits"]}{result}{SETTING["last_digits"]}')
+            f'Available card information: {settings["begin_digits"]}{result}{settings["last_digits"]}')
         self.result_label.setText(result_text)
 
     def update_pb_on_progress(self, i: int):
@@ -125,7 +125,9 @@ class MainWindow(QMainWindow):
 
 
 if __name__ == "__main__":
+    settings = read_settings('settings.json')
+
     app = QApplication(sys.argv)
-    window = MainWindow()
+    window = MainWindow(settings)
     window.show()
     sys.exit(app.exec())

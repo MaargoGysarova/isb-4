@@ -12,7 +12,7 @@ def charting() -> None:
     for i in range(1, 36):
         start = time.time()
         with mp.Pool(i) as p:
-            for result in p.map(check_hash, range(99999, 10000000)):
+            for result in p.map(check_hash, range(0, 1000000)):
                 if result:
                     end = time.time() - start
                     times = np.append(times, end)
