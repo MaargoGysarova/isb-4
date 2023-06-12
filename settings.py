@@ -16,7 +16,7 @@ def read_settings(path_settings: str) -> dict:
 
 
 def write_settings(path_settings: str) -> None:
-    SETTING = {
+    settings = {
         'hash': 'bf67709b1216cb66038f3ae5ad2b4c066be03cbb',
         'begin_digits': '220220',
         'last_digits': '5688'
@@ -24,7 +24,7 @@ def write_settings(path_settings: str) -> None:
     """the function writes values to settings.json"""
     try:
         with open(path_settings, 'w') as f:
-            json.dump(SETTING, f)
+            json.dump(settings, f)
         logging.info(
             f"the data of settings successfully write")
     except Exception as e:

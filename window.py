@@ -1,5 +1,5 @@
 import multiprocessing as mp
-import sys, time
+import sys ,time
 from hash import algorithm_luna, check_hash
 from settings import read_settings
 

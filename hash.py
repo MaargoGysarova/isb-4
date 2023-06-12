@@ -1,7 +1,7 @@
 from hashlib import sha1
-from settings import read_settings
+from my_settings import my_function
 
-setting = read_settings('settings.json')
+setting = my_function("settings.json")
 
 def check_hash(number:int) -> int:
     """Функция, которая проверяет совпадение хэша
