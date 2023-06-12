@@ -34,4 +34,4 @@ def algorithm_luna(number: int):
         if all_number[i] > 9:
             all_number[i] -= 9
 
-    return True if sum(all_number) % 10 == 0 else False
+    return sum(all_number) % 10 == 0
